@@ -14,7 +14,7 @@ router.post("/authors", validator.authorCreateValidator, authorController.create
 
 router.post("/blogs", authentication.authentication, validator.blogCreateValidator, authorization.authCreateBlog, blogController.createBlog)
 
-router.get("/blogs",authentication.authentication, blogController.getBlogs)
+router.get("/blogs", authentication.authentication, blogController.getBlogs)
 
 router.put("/blogs/:blogId", authentication.authentication, authorization.authUpdateDelete, validator.updatevalidation, blogController.updateBlog)
 
