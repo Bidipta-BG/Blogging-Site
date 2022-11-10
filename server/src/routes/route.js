@@ -12,13 +12,13 @@ const login = require("../controllers/loginController")
 
 router.post("/authors", validator.authorCreateValidator, authorController.createAuthor)
 
-router.post("/blogs", authentication.authentication, validator.blogCreateValidator, authorization.authCreateBlog, blogController.createBlog)
+router.post("/blogs", validator.blogCreateValidator, blogController.createBlog)
 
-router.get("/blogs", authentication.authentication, blogController.getBlogs)
+router.get("/blogs", blogController.getBlogs)
 
-router.put("/blogs/:blogId", authentication.authentication, authorization.authUpdateDelete, validator.updatevalidation, blogController.updateBlog)
+router.put("/blogs/:blogId",  validator.updatevalidation, blogController.updateBlog)
 
-router.delete("/blogs/:blogId",authentication.authentication, authorization.authUpdateDelete, blogController.deleteBlogId)
+router.delete("/blogs/:blogId", blogController.deleteBlogId)
 
 router.delete("/blogs",authentication.authentication, authorization.authDeleteByParams, blogController.deleteBlogIdAndQuery)
 

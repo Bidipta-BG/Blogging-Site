@@ -1,29 +1,13 @@
-const express = require('express');
-// const bodyParser = require('body-parser');
-const route = require('./routes/route.js');
-const { default: mongoose } = require('mongoose');
-const app = express();
-const cors = require('cors')
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+// import App from './App';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import App from './App';
 
 
-
-
-app.use(cors())
-
-app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-
-mongoose.connect("mongodb+srv://Bidipta-BG:wHFCxvYIKQmhPro5@cluster0.n5vfx.mongodb.net/BlogProject", {
-    useNewUrlParser: true
-})
-.then( () => console.log("MongoDb is connected"))
-.catch ( err => console.log(err) )
-
-
-app.use('/', route)
-
-
-app.listen(4000, function () {
-    console.log('Express app running on port ' + 4000)
-});
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App/>
+  </React.StrictMode>
+);

@@ -20,6 +20,7 @@ const authentication = async function (req, res, next) {
 
         // Checking if the token is creted using the secret key provided and decode it.
         let decodedToken = jwt.verify(token, "bidipta-jiyalal-unmesh");
+
         
         // if cannot verify, will return error
         if (!decodedToken) 

@@ -1,131 +1,70 @@
-# Radon
+# Getting Started with Create React App
 
-Repository for backend cohort - Radon
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Blogging Site Mini Project Requirement
+## Available Scripts
 
-## Phase I
+In the project directory, you can run:
 
-### Models
-- Author Model
-```
-{ fname: { mandatory}, lname: {mandatory}, title: {mandatory, enum[Mr, Mrs, Miss]}, email: {mandatory, valid email, unique}, password: {mandatory} }
-```
-- Blogs Model
-```
-{ title: {mandatory}, body: {mandatory}, authorId: {mandatory, refs to author model}, tags: {array of string}, category: {string, mandatory, examples: [technology, entertainment, life style, food, fashion]}, subcategory: {array of string, examples[technology-[web development, mobile development, AI, ML etc]] }, createdAt, updatedAt, deletedAt: {when the document is deleted}, isDeleted: {boolean, default: false}, publishedAt: {when the blog is published}, isPublished: {boolean, default: false}}
-```
+### `npm start`
 
-### Author APIs /authors
-- Create an author - atleast 5 authors
-- Create a author document from request body.
-  `Endpoint: BASE_URL/authors`
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### POST /blogs
-- Create a blog document from request body. Get authorId in request body only.
-- Make sure the authorId is a valid authorId by checking the author exist in the authors collection.
-- Return HTTP status 201 on a succesful blog creation. Also return the blog document. The response should be a JSON object like [this](#successful-response-structure) 
-- Create atleast 5 blogs for each author
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-- Return HTTP status 400 for an invalid request with a response body like [this](#error-response-structure)
+### `npm test`
 
-### GET /blogs
-- Returns all blogs in the collection that aren't deleted and are published
-- Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure) 
-- If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure) 
-- Filter blogs list by applying filters. Query param can have any combination of below filters.
-  - By author Id
-  - By category
-  - List of blogs that have a specific tag
-  - List of blogs that have a specific subcategory
-example of a query url: blogs?filtername=filtervalue&f2=fv2
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### PUT /blogs/:blogId
-- Updates a blog by changing the its title, body, adding tags, adding a subcategory. (Assuming tag and subcategory received in body is need to be added)
-- Updates a blog by changing its publish status i.e. adds publishedAt date and set published to true
-- Check if the blogId exists (must have isDeleted false). If it doesn't, return an HTTP status 404 with a response body like [this](#error-response-structure)
-- Return an HTTP status 200 if updated successfully with a body like [this](#successful-response-structure) 
-- Also make sure in the response you return the updated blog document. 
+### `npm run build`
 
-### DELETE /blogs/:blogId
-- Check if the blogId exists( and is not deleted). If it does, mark it deleted and return an HTTP status 200 without any response body.
-- If the blog document doesn't exist then return an HTTP status of 404 with a body like [this](#error-response-structure) 
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### DELETE /blogs?queryParams
-- Delete blog documents by category, authorid, tag name, subcategory name, unpublished
-- If the blog document doesn't exist then return an HTTP status of 404 with a body like [this](#error-response-structure)
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Phase II
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- Add authentication and authroisation feature
+### `npm run eject`
 
-### POST /login
-- Allow an author to login with their email and password. On a successful login attempt return a JWT token contatining the authorId
-- If the credentials are incorrect return a suitable error message with a valid HTTP status code
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### Authentication
-- Add an authorisation implementation for the JWT token that validates the token before every protected endpoint is called. If the validation fails, return a suitable error message with a corresponding HTTP status code
-- Protected routes are create a blog, edit a blog, get the list of blogs, delete a blog(s)
-- Set the token, once validated, in the request - `x-api-key`
-- Use a middleware for authentication purpose.
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### Authorisation
-- Make sure that only the owner of the blogs is able to edit or delete the blog.
-- In case of unauthorized access return an appropirate error message.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-## Testing (Self-evaluation During Development)
-- To test these apis create a new collection in Postman named Project 1 Blogging 
-- Each api should have a new request in this collection
-- Each request in the collection should be rightly named. Eg Create author, Create blog, Get blogs etc
-- Each member of each team should have their tests in running state
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+## Learn More
 
-Refer below sample
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
- ![A Postman collection and request sample](assets/Postman-collection-sample.png)
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-## Response
+### Code Splitting
 
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Successful Response structure
-```yaml
-{
-  status: true,
-  data: {
+### Analyzing the Bundle Size
 
-  }
-}
-```
-### Error Response structure
-```yaml
-{
-  status: false,
-  msg: ""
-}
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
+### Making a Progressive Web App
 
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
+### Advanced Configuration
 
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-## Collections
-### Blogs
-```yaml
-{
-  "title": "How to win friends",
-  "body": "Blog body",
-  "tags": ["Book", "Friends", "Self help"],
-  "category": "Book",
-  "subcategory": ["Non fiction", "Self Help"],
-  "published": false,
-  "publishedAt": "", // if published is true publishedAt will have a date 2021-09-17T04:25:07.803Z
-  "deleted": false,
-  "deletedAt": "", // if deleted is true deletedAt will have a date 2021-09-17T04:25:07.803Z,
-  "createdAt": "2021-09-17T04:25:07.803Z",
-  "updatedAt": "2021-09-17T04:25:07.803Z",
-}
-```
+### Deployment
 
-#### Refer https://jsonplaceholder.typicode.com/guide/ for some fake blogs data.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-#### Note: Create a group database and use the same database in connection string by replacing `groupXDatabase
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

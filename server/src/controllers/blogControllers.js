@@ -18,10 +18,10 @@ const createBlog = async function (req, res) {
         
         // creating a new document using the conditions inside the 'body' object
         let authorData = await blogModel.create(body)
-        return res.status(201).send({ status: true, data: authorData })
+        return res.status(201).send({ message:"Blog Created Success",status: true, data: authorData })
     }
     catch (err) {
-        return res.status(500).send({ msg: "Serverside Errors. Please try again later", error: err.message })
+        return res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
 
     }
 }
@@ -51,7 +51,7 @@ const getBlogs = async function (req, res) {
 
         //check if authorId key is enterd in filter and if its is a valid objectid
         if (("authorId" in data) && (!ObjectId.isValid(authorId))) {
-            return res.status(400).send({ status: false, msg: "Bad Request. AuthorId invalid" })
+            return res.status(400).send({ status: false, message: "Bad Request. AuthorId invalid" })
         }
         // adding two new kew value pair {isDelete:false, idPublished:true} to the enterd object (data) 
         //because the blog requested by user shouldnot be deleted and should be get created by some author
@@ -61,14 +61,14 @@ const getBlogs = async function (req, res) {
         let savedBlogs = await blogModel.find(data).populate("authorId") //find return array of object
         // check if condition entered in the postman/filter doesnot match any document
         if (savedBlogs.length == 0) {
-            return res.status(404).send({ status: false, msg: "Resource Not found. Please try another filter" })
+            return res.status(404).send({ status: false, message: "Resource Not found. Please try another filter" })
         } 
         // if data found in DB
         return res.status(200).send({ status: true,returned_document: savedBlogs.length ,data: savedBlogs })
         
     }
     catch (err) {
-        return res.status(500).send({ msg: "Serverside Errors. Please try again later", error: err.message })
+        return res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
 
     }
 
@@ -95,7 +95,7 @@ const updateBlog = async function (req, res) {
         
     }
      catch (err) {
-        return res.status(500).send({ msg: "Serverside Errors. Please try again later", error: err.message })
+        return res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
 
     }
 }
@@ -116,11 +116,11 @@ const deleteBlogId = async function (req, res) {
             //DB call for users condition
             await blogModel.findOneAndUpdate({ _id: enteredBlogId }, { isDeleted: true, deletedAt: deleteDate },
                 { new: true })
-            return res.status(200).send({ status: true, msg: "Blog successfully deleted" })
+            return res.status(200).send({ status: true, message: "Blog successfully deleted" })
     }
     catch (err) {
         console.log(err)
-        return res.status(500).send({ status: false, msg: err.message })
+        return res.status(500).send({ status: false, message: err.message })
     }
 }
 
@@ -155,14 +155,14 @@ const deleteBlogIdAndQuery = async function(req,res){
         let deleteDate = moment().format('YYYY-MM-DD h:mm:ss')
         let updateData = await blogModel.updateMany(data, {deletedAt: deleteDate}, {$set: {isDeleted : true}})
         if(updateData.matchedCount==0){  //if combination of filtered documents doesnot exist
-            return res.status(404).send({ status: false, msg: "Page/Resource not found. Blog Document doesnot exist for this filter"})
+            return res.status(404).send({ status: false, message: "Page/Resource not found. Blog Document doesnot exist for this filter"})
         }else{
-            return res.status(201).send({status:true,msg: "Blog successfully deleted", data: updateData})
+            return res.status(201).send({status:true,message: "Blog successfully deleted", data: updateData})
         }
     }
     catch(err){
         console.log(err)
-        return res.status(500).send({status:false, msg:err.message})
+        return res.status(500).send({status:false, message:err.message})
     }
 }
 

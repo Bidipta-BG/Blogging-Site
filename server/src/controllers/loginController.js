@@ -11,7 +11,7 @@ const loginUser = async function (req, res) {
     if (!user)
       return res.status(400).send({
         status: false,
-        msg: "Bad Request. username or the password is not corerct",
+        message: "Bad Request. username or the password is not corerct",
       });
     let token = jwt.sign(
       {
@@ -22,7 +22,7 @@ const loginUser = async function (req, res) {
       "bidipta-jiyalal-unmesh"
     );
     res.setHeader("x-api-key", token);
-    res.send({ status: true,msg: "Login Successfull", data: token });
+  res.send({ status: true, message: "Login Successfull", data: token, id: user._id });
   };
 
 
