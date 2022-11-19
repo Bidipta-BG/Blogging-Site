@@ -1,33 +1,104 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Filter from './Filter';
+import {useNavigate} from 'react-router-dom'
+// import userId from './Login'
 
-function Profile(){
+
+
+
+
+function Profile(props){
+
+  let navigate = useNavigate()
+  useEffect(() => { document.title = 'Your Blogs' }, [])
+  useEffect(() => { getBlogsById() }, [])
+
+
+  const [data, setData] = useState([])
+
+  async function getBlogsById() {
+    let id = await localStorage.getItem("userId")
+        id = JSON.parse(id)
+    console.log('id= ', id)
+    let url = `http://localhost:4000/blogs?authorId=${id}`
+    // console.log(url);
+    let alldata = await fetch(url)
+    alldata = await alldata.json()
+    console.log(alldata)
+    if(alldata.status == true){
+      // console.log(alldata)
+      setData(alldata.data)
+    }
+    
+  }
+  const update=(document)=>{
+    localStorage.setItem("updateBlogId",JSON.stringify(document._id))
+    props.data(document)
+    navigate("/update")
+  }
+  async function deleteBlog(id){
+    console.log(id);
+    let url = `http://localhost:4000/blogs/${id}`
+    await fetch(url, {
+      method: 'delete',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+      .then(res => res.json()
+        .then((response) => {
+          console.log(response);
+          if (response.status === true) {
+            alert(response.message)
+            getBlogsById()
+          } else {
+            alert(response.message);
+          }
+        }))
+  }
 
     return(
         <div>
-        <div class="container">
-          <div class="row">
-            <div class="col-2">
+        <div className="container">
+          <div className="row">
+            {/* <div className="col-2">
               <Filter title="Tags" />
               <Filter title="Category" />
               <Filter title="Sub-Category" />
             </div>
-            <div class="col-10">
-              <div className='mt-4'>
-                <div class="card text-center">
-                  <div class="d-flex justify-content-between card-header">
-                    <p>-Unmesh <br /><div className='bg-secondary bg-gradient'>technology</div></p>
-                    <h5>Importance of React </h5>
-                    <p>24 March</p>
-                  </div>
-                  <div class="card-body">
-                    <h5 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit obcaecati illum aliquam magni, quis mollitia ratione placeat molestias doloribus? Tempora doloribus maiores vitae. Adipisci, inventore. Sint, illo. Cum aspernatur modi nobis corporis odit delectus officia eveniet voluptate explicabo ullam voluptatem molestias labore quia id iusto, necessitatibus et magnam error quasi accusamus porro ducimus, nam laboriosam dolorem? Fuga sint eaque ab adipisci unde. Praesentium, iusto a repellat voluptate consequatur asperiores quam saepe doloribus sapiente vero ullam soluta ratione harum modi. Quibusdam aliquid libero sint veniam minus quas quia ducimus aspernatur repudiandae porro in, hic dolor a natus excepturi quis sapiente ipsum.</h5>
-                    <button type="button" class="btn btn-warning me-3">Update</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+            <div className="col-10"> */}
+
+            {data.length == 0 ? 
+            
+                <div className='mt-4'>
+                  <div className="card text-center">
+                    <div className="d-flex justify-content-center card-header">
+                      <h5>No Data Available. Please Login or Create a blog</h5>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+            : 
+              data.map(ele => 
+                <div className='mt-4'>
+                  <div className="card text-center">
+                    <div className="d-flex justify-content-between card-header">
+                      <p>-{ele.authorId.fname + ' ' + ele.authorId.lname} <br /><div className="btn btn-outline-success">{ele.category}</div></p>
+                      <h5>{ele.title}</h5>
+                      <p>{ele.createdAt.slice(0,10)}</p>
+                    </div>
+                    <div className="card-body">
+                      <h5 className="card-title">{ele.body}</h5>
+                      <button onClick={()=>{update(ele)}} type="button" className="btn btn-warning me-3">Update</button>
+                      <button onClick={() => { deleteBlog(ele._id) }} type="button" className="btn btn-danger">Delete</button>
+                    </div>
+                  </div>
+                </div>
+                )
+             }
+              
+
+            {/* </div> */}
           </div>
         </div>
 
