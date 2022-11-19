@@ -14,24 +14,23 @@ const authentication = async function (req, res, next) {
 
         //If no token is present in the request header return error
         if (!token) 
-            return res.status(400).send({ status: false, msg: "Bad Request. Please login again to generate the token" });
+            return res.status(400).send({ status: false, message: "Bad Request. Please login again to generate the token" });
 
         //>>>>>>>>>>>>>>>>Authentication
 
         // Checking if the token is creted using the secret key provided and decode it.
         let decodedToken = jwt.verify(token, "bidipta-jiyalal-unmesh");
-
         
         // if cannot verify, will return error
         if (!decodedToken) 
-            return res.status(401).send({ status: false, msg: "Authentication Missing. Login is required. Token is invalid" });
+            return res.status(401).send({ status: false, message: "Authentication Missing. Login is required. Token is invalid" });
 
 
         next()
     }
 
     catch (err) {
-        res.status(500).send({ msg: "Serverside Errors. Please try again later", error: err.message })
+        res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
     }
 
 }

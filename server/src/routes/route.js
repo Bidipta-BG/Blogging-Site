@@ -16,16 +16,16 @@ router.post("/blogs", validator.blogCreateValidator, blogController.createBlog)
 
 router.get("/blogs", blogController.getBlogs)
 
-router.put("/blogs/:blogId",  validator.updatevalidation, blogController.updateBlog)
+router.put("/blogs/:blogId", validator.updatevalidation, blogController.updateBlog)
 
 router.delete("/blogs/:blogId", blogController.deleteBlogId)
 
-router.delete("/blogs",authentication.authentication, authorization.authDeleteByParams, blogController.deleteBlogIdAndQuery)
+router.delete("/blogs", authentication.authentication, authorization.authDeleteByParams, blogController.deleteBlogIdAndQuery)
 
 
 //---------------Login---------
 
-router.post("/loginUser", validator.loginvalidation, login.loginUser )
+router.post("/loginUser", validator.loginvalidation, login.loginUser)
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

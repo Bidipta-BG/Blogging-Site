@@ -18,7 +18,7 @@ const authorCreateValidator = async function (req, res, next) {
 
     // Checks the length of first name and last name.
     if((data.fname.trim().length < 3) || (data.lname.trim().length < 2)){
-        return res.status(400).send({status: false, message:"Bad Request. This field must have a valid entry"})
+        return res.status(400).send({status: false, message:"Bad Request. First name and last name should be of valid length"})
         }
 
     // Check if title is in correct enum

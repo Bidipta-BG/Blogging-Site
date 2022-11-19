@@ -22,13 +22,13 @@ const authCreateBlog = async function (req, res, next) {
 
         //userId comparision to check if the logged-in user is requesting for their own data.
         if (userToBeModified != userLoggedIn) //compared if enterd authorid and decoded token authorid is same or not
-        return res.status(403).send({ status: false, msg: 'Not Authorized. User logged is not allowed to modify the requested users data' })
+        return res.status(403).send({ status: false, message: 'Not Authorized. User logged is not allowed to modify the requested users data' })
  
         next()
     }
 
     catch (err) {
-        res.status(500).send({ msg: "Serverside Errors. Please try again later", error: err.message })
+        res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
     }
 
 }
@@ -54,23 +54,23 @@ const authUpdateDelete = async function (req, res, next) {
         //Checking if the entered blog id in params/url is valid nor not
         let enteredBlogId = req.params.blogId
         if (!ObjectId.isValid(enteredBlogId)) {
-            return res.status(400).send({ status: false, msg: "Bad Request. BlogId invalid" })
+            return res.status(400).send({ status: false, message: "Bad Request. BlogId invalid" })
         }
 
         // checking if the author trying to modify the documents belongs to his or not 
         const searchBlog = await blogModel.findById(enteredBlogId)
         if (!searchBlog) {  //check if document is present in DB, iif not found anything return error
-            return res.status(404).send({ status: false, msg: "Page/Resource not found. Enter valid blog id" })
+            return res.status(404).send({ status: false, message: "Page/Resource not found. Enter valid blog id" })
         }
 
         let userToBeModified = searchBlog.authorId //storing the authorid from the blog document found by making the db call
         let userLoggedIn = decodedToken.userId // storing the authorid from decoded token in a variable
 
         if (userToBeModified != userLoggedIn) {//comparing if authorid found from searched ddb blog document and decoded token authorid is same or not
-            return res.status(403).send({ status: false, msg: 'Not Authorized. User logged is not allowed to modify the requested users data' })
+            return res.status(403).send({ status: false, message: 'Not Authorized. User logged is not allowed to modify the requested users data' })
         }
         if (searchBlog.isDeleted == true) {  //check if the document is already deleted
-            return res.status(404).send({ status: false, msg: "Page/Resource not found. Blog Document doesnot exist. Already deleted" })
+            return res.status(404).send({ status: false, message: "Page/Resource not found. Blog Document doesnot exist. Already deleted" })
         }
 
 
@@ -78,7 +78,7 @@ const authUpdateDelete = async function (req, res, next) {
     }
 
     catch (err) {
-        res.status(500).send({ msg: "Serverside Errors. Please try again later", error: err.message })
+        res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
     }
 
 }
@@ -104,13 +104,13 @@ const authDeleteByParams = async function (req, res, next) {
 
         //checking if entered filter is empty. If empty instead of deleting all docs, send an error message
         if (Object.keys(data).length === 0) {
-            return res.status(400).send({ status: false, msg: 'Bad Request. Please enter valid condition' })
+            return res.status(400).send({ status: false, message: 'Bad Request. Please enter valid condition' })
         }
         if(("authorId" in data)&&(!ObjectId.isValid(authorId))){
-            return res.status(400).send({ status: false, msg: "Bad Request. AuthorId invalid" })
+            return res.status(400).send({ status: false, message: "Bad Request. AuthorId invalid" })
         }
         if(("authorId" in data)&&(authorId != userLoggedIn)){
-            return res.status(403).send({status:false, msg:'Not Authorised. You cannot delete this'})
+            return res.status(403).send({status:false, message:'Not Authorised. You cannot delete this'})
         }
         
        
@@ -119,7 +119,7 @@ const authDeleteByParams = async function (req, res, next) {
     }
 
     catch (err) {
-        res.status(500).send({ msg: "Serverside Errors. Please try again later", error: err.message })
+        res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
     }
 
 }

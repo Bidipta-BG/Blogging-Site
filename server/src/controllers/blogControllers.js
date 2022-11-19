@@ -18,7 +18,7 @@ const createBlog = async function (req, res) {
         
         // creating a new document using the conditions inside the 'body' object
         let authorData = await blogModel.create(body)
-        return res.status(201).send({ message:"Blog Created Success",status: true, data: authorData })
+        return res.status(201).send({ status: true, data: authorData, message:'Blog created Successfull' })
     }
     catch (err) {
         return res.status(500).send({ message: "Serverside Errors. Please try again later", error: err.message })
@@ -91,7 +91,7 @@ const updateBlog = async function (req, res) {
                 title: req.body.title, body: req.body.body,
                 $addToSet: { tags: req.body.tags, subcategory: req.body.subcategory }, isPublished: true, publishedAt: publishDate
             }, { new: true }).populate("authorId")
-            return res.status(200).send({ status: true, data: updateData })
+            return res.status(200).send({ status: true, data: updateData, message:'Blog Update Successfull' })
         
     }
      catch (err) {
