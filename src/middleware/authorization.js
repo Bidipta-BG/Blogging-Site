@@ -2,7 +2,7 @@ const blogModel = require("../models/blogModel")
 // const authorModel = require("../models/authorModel")
 const ObjectId = require('mongoose').Types.ObjectId
 const jwt = require("jsonwebtoken")
-
+require("dotenv").config();
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
@@ -10,11 +10,11 @@ const authCreateBlog = async function (req, res, next) {
 
     try {
         // check if token key is present in the header/cookies
-        let token = req.headers["x-Api-key"];  
+        let token = req.headers["x-Api-key"];
         if (!token) token = req.headers["x-api-key"]; //convert key to small case because it will only accept smallcase
 
         // Checking if the token is creted using the secret key provided and decode it.
-        let decodedToken = jwt.verify(token, "bidipta-jiyalal-unmesh"); 
+        let decodedToken = jwt.verify(token, process.env.JWT_KEY);
 
         //---------------Authorisation
         let userToBeModified = req.body.authorId //storing the authorid entered in the request/postman body in a variable
@@ -22,8 +22,8 @@ const authCreateBlog = async function (req, res, next) {
 
         //userId comparision to check if the logged-in user is requesting for their own data.
         if (userToBeModified != userLoggedIn) //compared if enterd authorid and decoded token authorid is same or not
-        return res.status(403).send({ status: false, message: 'Not Authorized. User logged is not allowed to modify the requested users data' })
- 
+            return res.status(403).send({ status: false, message: 'Not Authorized. User logged is not allowed to modify the requested users data' })
+
         next()
     }
 
@@ -49,7 +49,7 @@ const authUpdateDelete = async function (req, res, next) {
         if (!token) token = req.headers["x-api-key"]; //convert key to small case because it will only accept smallcase
 
         // Checking if the token is creted using the secret key provided and decode it.
-        let decodedToken = jwt.verify(token, "bidipta-jiyalal-unmesh");
+        let decodedToken = jwt.verify(token, process.env.JWT_KEY);
 
         //Checking if the entered blog id in params/url is valid nor not
         let enteredBlogId = req.params.blogId
@@ -96,8 +96,8 @@ const authDeleteByParams = async function (req, res, next) {
         let token = req.headers["x-Api-key"];
         if (!token) token = req.headers["x-api-key"];
 
-        let decodedToken = jwt.verify(token, "bidipta-jiyalal-unmesh");
-        
+        let decodedToken = jwt.verify(token, process.env.JWT_KEY);
+
         let data = req.query
         let authorId = data.authorId
         let userLoggedIn = decodedToken.userId
@@ -106,14 +106,14 @@ const authDeleteByParams = async function (req, res, next) {
         if (Object.keys(data).length === 0) {
             return res.status(400).send({ status: false, message: 'Bad Request. Please enter valid condition' })
         }
-        if(("authorId" in data)&&(!ObjectId.isValid(authorId))){
+        if (("authorId" in data) && (!ObjectId.isValid(authorId))) {
             return res.status(400).send({ status: false, message: "Bad Request. AuthorId invalid" })
         }
-        if(("authorId" in data)&&(authorId != userLoggedIn)){
-            return res.status(403).send({status:false, message:'Not Authorised. You cannot delete this'})
+        if (("authorId" in data) && (authorId != userLoggedIn)) {
+            return res.status(403).send({ status: false, message: 'Not Authorised. You cannot delete this' })
         }
-        
-       
+
+
 
         next()
     }
